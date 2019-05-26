@@ -1,0 +1,12 @@
+{
+    "name": "adrian/humcoin",
+    "authors": [
+        {
+            "name": "Adrian Verde",
+            "email": "me@adrianverde.com"
+        }
+    ],
+    "require": {
+        "catfan/medoo": "^1.6"
+    }
+}
