@@ -25,21 +25,20 @@
         <p class="lead">Here you can send your project proposal that can solve the natural disaster, if you get enough votes, funds from the DAO will be assigned so you can accomplish the project.</p>
       </div>
 
-      
         <div class="col-md-8 offset-md-2 order-md-1">
           <h4 class="mb-3">Project</h4>
-          <form class="needs-validation" novalidate>
+          <form class="needs-validation" enctype="multipart/form-data" action="./send.php" method="post" novalidate>
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Title</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <input type="text" class="form-control" name="title" id="firstName" placeholder="" value="" required>
                 <div class="invalid-feedback">
                   Project name is required.
                 </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Organization in charge</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <input type="text" class="form-control" name="org" id="lastName" placeholder="" value="" required>
                 <div class="invalid-feedback">
                   Organization or company responsible for the project.
                 </div>
@@ -49,12 +48,22 @@
 			<div class="row">
               <div class="col-md-12 mb-3">
                 <label for="exampleFormControlTextarea1">Project description</label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+				<textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
                 <div class="invalid-feedback">
                   Project description is required.
                 </div>
               </div>
             </div>
+			
+			<div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="exampleFormControlTextarea1">Thumbnail of project</label><br>
+				Select image: <input type="file" name="thumbnail">
+              </div>
+            </div>
+			
+			
+
 
             <div class="mb-3">
               <label for="username">Twitter username of project manager</label>
@@ -62,7 +71,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input type="text" class="form-control" id="username" placeholder="Username" required>
+                <input type="text" class="form-control" name="twitter" id="username" placeholder="Username" required>
                 <div class="invalid-feedback" style="width: 100%;">
                   Your twitter is required.
                 </div>
@@ -71,7 +80,7 @@
 
             <div class="mb-3">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+              <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com">
               <div class="invalid-feedback">
                 Please enter a valid email address.
               </div>
@@ -79,7 +88,7 @@
 
             <div class="mb-3">
               <label for="address">Location</label>
-              <input type="text" class="form-control" id="address" placeholder="Fukushima" required>
+              <input type="text" class="form-control" name="location" id="address" placeholder="Fukushima" required>
               <div class="invalid-feedback">
                 Please enter your project execution location.
               </div>
@@ -87,15 +96,15 @@
 
             <div class="mb-3">
               <label for="address2">Quantity of people involved <span class="text-muted">(Optional)</span></label>
-              <input type="text" class="form-control" id="address2" placeholder="5932 people">
+              <input type="text" name="qty" class="form-control" id="address2" placeholder="5932 people">
             </div>
 
             <div class="row">
               <div class="col-md-5 mb-3">
                 <label for="country">Currency of country of destination</label>
-                <select class="custom-select d-block w-100" id="country" required>
+                <select class="custom-select d-block w-100" name="currency" required>
                   <option value="">Choose...</option>
-                  <option>DAI</option>
+                  <option value="DAI">DAI</option>
                 </select>
                 <div class="invalid-feedback">
                   Please select a valid currency.
@@ -103,9 +112,9 @@
               </div>
               <div class="col-md-4 mb-3">
                 <label for="state">Country</label>
-                <select class="custom-select d-block w-100" id="state" required>
+                <select class="custom-select d-block w-100" name="country" id="state" required>
                   <option value="">Choose...</option>
-                  <option>Japan</option>
+                  <option value="Japan">Japan</option>
                 </select>
                 <div class="invalid-feedback">
                   Please provide a valid country.
@@ -113,7 +122,7 @@
               </div>
               <div class="col-md-3 mb-3">
                 <label for="zip">Money needed (USD)</label>
-                <input type="text" class="form-control" id="zip" placeholder="" required>
+                <input type="text" class="form-control" name="money" placeholder="" required>
                 <div class="invalid-feedback">
                   Be realistic.
                 </div>
@@ -175,7 +184,7 @@
 
         window.addEventListener('load', function() {
           // Fetch all the forms we want to apply custom Bootstrap validation styles to
-          var forms = document.getElementsByClassName('needs-validation');
+          var forms = document.getElementsByClassName('needs-validationa');
 
           // Loop over them and prevent submission
           var validation = Array.prototype.filter.call(forms, function(form) {
