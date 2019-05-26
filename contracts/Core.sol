@@ -1,13 +1,13 @@
 pragma solidity ^0.5.0;
 
 import "./Winner.sol";
-// Core.deployed().then(instance => { app = instance })
-// web3.eth.defaultAccount = "0xb10aFbb40E46FFe52B136b8C123DDd00833C65B0"
-// app.recieveFounds({ value: web3.utils.toWei('1') })
+
 contract Core {
 
     ProjectCreatedInfo[] public projectsCreated;
     ProjectProposedInfo[] public projectsProposed;
+    address[] public donators;
+    uint public lengthOfProposedProjects = 0;
 
     struct ProjectCreatedInfo {
         address company;
@@ -20,21 +20,27 @@ contract Core {
         address company;
         uint value;
         uint32 estimatedTime;
+        uint8 id;
         uint8 votes;
     }
 
     function() external payable { }
 
     function recieveFounds() public payable {
+        donators.push(msg.sender);
         address(this).transfer(msg.value);
     }
 
-    function getLengthOfCreatedProjects() public view returns (uint) {
-        return projectsCreated.length;
+    function getLengthOfDonators() public view returns (uint) {
+        return donators.length;
     }
 
-    function getLengthOfProposedProjects() public view returns (uint) {
-        return projectsProposed.length;
+    function checkDonator(uint index) public view returns (address) {
+        return donators[index];
+    }
+
+    function lengthOfCreatedProjects() public view returns (uint) {
+        return projectsCreated.length;
     }
 
     function getItemOfCreatedProjects(uint index) public view returns (address, uint, uint, uint) {
@@ -48,10 +54,12 @@ contract Core {
     }
 
     function proposeProject(uint32 _estimatedTime, address _company, uint _value) external {
-        projectsProposed.push(ProjectProposedInfo(_company, _value, _estimatedTime, 0));
+        ProjectProposedInfo memory project = ProjectProposedInfo(_company, _value, _estimatedTime, uint8(lengthOfProposedProjects), 0);
+        lengthOfProposedProjects++;
+        projectsProposed.push(project);
     }
 
-    function createProject(uint32 _finishTime, address _company, uint _requiredValue) public returns (address) {
+    function createProject(uint32 _finishTime, address _company, uint _requiredValue) internal returns (address) {
         uint contractBalance = address(this).balance;
         Winner project = new Winner();
         require(contractBalance > _requiredValue, "Insufficent money");

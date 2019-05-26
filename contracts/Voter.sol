@@ -5,20 +5,28 @@ import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Voter is Core {
 
-    Core manager;
     using SafeMath for uint8;
 
-    function checkProject() public {
-        manager.proposeProject(1 days, address(0xe4493ae993e8ffc9fd191c1bcb408ae7c8b01129dc7e880c89d72b31dd6c6230), 2);
+    function winningProposal() internal view returns (uint winningProposal_) {
+        uint winningVoteCount = 0;
+        for (uint p = 0; p < projectsProposed.length; p++) {
+            if (projectsProposed[p].votes > winningVoteCount) {
+                winningVoteCount = projectsProposed[p].votes;
+                winningProposal_ = p;
+            }
+        }
     }
 
-    function voteForProject(uint index, bool vote) internal {
-        if (vote) {
-            ProjectProposedInfo storage projectChoosed = projectsProposed[index];
-            projectChoosed.votes = uint8(projectChoosed.votes.add(1));
-        } else {
-            ProjectProposedInfo storage projectChoosed = projectsProposed[index];
-            projectChoosed.votes = uint8(projectChoosed.votes.sub(1));
+    function retrieveWinner() public {
+        uint winnerIndex = winningProposal();
+        ProjectProposedInfo memory winner = projectsProposed[winnerIndex];
+        uint32 finishTime = uint32(block.timestamp) + uint32(winner.estimatedTime);
+        createProject(finishTime, winner.company, winner.value);
+    }
+
+    function voteForProject(uint _index, bool _vote) public {
+        if (_vote) {
+            projectsProposed[_index].votes = uint8(projectsProposed[_index].votes.add(1));
         }
     }
 
