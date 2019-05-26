@@ -16,6 +16,12 @@ module.exports = {
       network_id: 4,
       gas: 3000000,
       gasPrice: 10000000000
+    },
+    ropsten: {
+      provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, "https://ropsten.infura.io/v3/371b884c687647b9be1395dc80f7952b"),
+      network_id: 3,
+      gas: 3000000,
+      gasPrice: 10000000000
     }
   }
 };

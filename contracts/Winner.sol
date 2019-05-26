@@ -1,5 +1,7 @@
 pragma solidity ^0.5.0;
 
+import './Core.sol';
+
 contract Winner {
     uint public finishTime;
     uint public value;
@@ -13,6 +15,8 @@ contract Winner {
         createdTime = block.timestamp;
     }
 
-
+    function getProjectPrice() public view returns (uint) {
+        return value;
+    }
 
 }
